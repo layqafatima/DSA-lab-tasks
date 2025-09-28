@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+bool isSafe(int maze[10][10], int x, int y, int N, bool visited[10][10]){
+    return (x>=0 && x<N && y>=0 && y<N && maze[x][y]==1 && !visited[x][y]);
+}
+
+bool solveMazeUtil(int maze[10][10], int x, int y, int N, bool visited[10][10], int solution[10][10]){
+    if(x==N-1 && y==N-1){
+        solution[x][y]=1;
+        return true;
+    }
+    if(isSafe(maze,x,y,N,visited)){
+        visited[x][y]=true;
+        solution[x][y]=1;
+
+        if(solveMazeUtil(maze,x+1,y,N,visited,solution)) return true;
+        if(solveMazeUtil(maze,x-1,y,N,visited,solution)) return true;
+        if(solveMazeUtil(maze,x,y+1,N,visited,solution)) return true;
+        if(solveMazeUtil(maze,x,y-1,N,visited,solution)) return true;
+
+        solution[x][y]=0;
+        visited[x][y]=false;
+        return false;
+    }
+    return false;
+}
+
+void printSolution(int solution[10][10], int N){
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++)
+            cout<<solution[i][j]<<" ";
+        cout<<endl;
+    }
+}
+
+int main(){
+    int N;
+    cin>>N;
+    int maze[10][10];
+    for(int i=0;i<N;i++)
+        for(int j=0;j<N;j++)
+            cin>>maze[i][j];
+
+    int solution[10][10]={0};
+    bool visited[10][10]={false};
+
+    if(solveMazeUtil(maze,0,0,N,visited,solution))
+        printSolution(solution,N);
+    else
+        cout<<"No path exists";
+}
