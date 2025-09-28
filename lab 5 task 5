@@ -52,5 +52,4 @@ int main(){
     };
     if(solveSudoku(grid)) printGrid(grid);
     else cout<<"No solution exists";
-    return 0;
 }
