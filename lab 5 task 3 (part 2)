@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+int sumNonTail(int n){
+    if(n==0)
+        return 0;
+    return n+sumNonTail(n-1);
+}
+int main(){
+    int n = 5;
+    cout << "Sum via non-tail recursion: " <<sumNonTail(n)<<endl;
+}
+// In tailed recursion each call directly passes the updated total therefore nothing is left to compute after the recursive call so stack frames do not need to be kept since no work is pending. Whereas in non tailed recursion 
+//Each call waits for the result of the next call before adding n.Work (+n) remains after the recursive call so stack frames must be kept until the recursion fully unwinds.
