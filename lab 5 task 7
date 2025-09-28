@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+bool isSafe(int board[20][20], int row, int col, int N){
+    for(int i=0;i<row;i++)
+        if(board[i][col]==1) return false;
+    for(int i=row-1,j=col-1;i>=0 && j>=0;i--,j--)
+        if(board[i][j]==1) return false;
+    for(int i=row-1,j=col+1;i>=0 && j<N;i--,j++)
+        if(board[i][j]==1) return false;
+    return true;
+}
+
+void printBoard(int board[20][20], int N){
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++)
+            cout<<board[i][j]<<" ";
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
+void solveNQueensUtil(int board[20][20], int row, int N){
+    if(row==N){
+        printBoard(board,N);
+        return;
+    }
+    for(int col=0;col<N;col++){
+        if(isSafe(board,row,col,N)){
+            board[row][col]=1;
+            solveNQueensUtil(board,row+1,N);
+            board[row][col]=0;
+        }
+    }
+}
+int main(){
+    int N;
+    cin>>N;
+    int board[20][20]={0};
+    solveNQueensUtil(board,0,N);
+}
