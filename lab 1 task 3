@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+class Box {
+    int* value;
+public:
+    Box(int v=0) {
+        value = new int(v);}
+    ~Box() {
+        delete value;
+    }
+    Box(const Box& b) {
+        value = new int(*b.value);
+    }
+    Box& operator=(const Box& b) {
+        if(this != &b){
+            delete value;
+            value = new int(*b.value);
+        }
+        return *this;
+    }
+    void setValue(int v) {
+        *value = v;
+    }
+    int getValue() {
+        return *value;
+    }
+};
+int main(){
+    Box b1(100);
+    Box b2 = b1;
+    Box b3;
+    b3 = b1;
+
+    cout<<"Initial values: ";
+    cout<<"b1: "<<b1.getValue()<<endl;
+    cout<<"b2: "<<b2.getValue()<<endl;
+    cout<<"b3: "<<b3.getValue()<<endl;
+    b2.setValue(200);
+    b3.setValue(300);
+    cout<<"New val: ";
+    cout<<"b1: "<<b1.getValue()<<endl;
+    cout<<"b2: "<<b2.getValue()<<endl;
+    cout<<"b3: "<<b3.getValue()<<endl;
+}
