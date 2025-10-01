@@ -1,0 +1,39 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Exam {
+    char* studentName;
+    char* examDate;
+    int score;
+public:
+    Exam() {
+        studentName = new char[50];
+        examDate = new char[20];
+        score = 0;
+    }
+    ~Exam() {
+        delete[] studentName;
+        delete[] examDate;
+    }
+    void setDetails(const char* name, const char* date, int s){
+        strcpy(studentName, name);
+        strcpy(examDate, date);
+        score =s;
+    }
+    void display(){
+        cout<<"Student: "<<studentName<<endl;
+        cout<<"Exam date: "<<examDate<<endl;
+        cout<<"Score: "<<score<<endl;
+    }
+};
+int main(){
+    Exam e1;
+    e1.setDetails("Layqa", "2025/10/1", 95);
+    Exam e2 =e1;
+    e2.display();
+    e2.setDetails("Fatima", "2025/10/2", 88);
+    cout<<"After modifying:";
+    e1.display();
+    e2.display();
+}
+
