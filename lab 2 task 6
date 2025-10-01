@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+class SafePointer {
+    int* ptr;
+public:
+    SafePointer() {
+        ptr=new int;
+    }
+    ~SafePointer() {
+        delete ptr;
+    }
+    void setValue(int value) {
+        *ptr=value;
+    }
+    int getValue() {
+        return *ptr;
+    }
+    void release() {
+        delete ptr;
+        ptr=nullptr;
+    }
+};
+int main() {
+    int n=5;
+    SafePointer* marks=new SafePointer[n];
+
+    cout<<"Enter marks of "<<n<<" students:\n";
+    for(int i=0;i<n;i++){
+        int val;
+        cin>>val;
+        marks[i].setValue(val);
+    }
+    cout<<Stored marks:";
+    for(int i=0;i<n;i++){
+        cout<<"Student "<<i+1<<": "<<marks[i].getValue()<<endl;
+    }
+    for(int i=0;i<n;i++)
+        marks[i].release();
+    delete[] marks;
+}
