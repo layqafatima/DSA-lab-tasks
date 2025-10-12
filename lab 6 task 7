@@ -1,0 +1,96 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+using namespace std;
+
+struct Process
+{
+    int id;
+    int priority;
+};
+
+int main()
+{
+    queue<Process> arrivalQueue;
+    stack<Process> execStack;
+    int choice;
+    
+    while(true)
+    {
+        cout<<"Job Scheduling Menu";
+        cout<<"1. Add Process\n2. Execute High-Priority Task\n3. Show Arrival Queue\n4. Exit\n";
+        cout<<"Enter choice: ";
+        cin>>choice;
+
+        if(choice==1)
+        {
+            Process p;
+            cout<<"Enter Process ID: ";
+            cin>>p.id;
+            cout<<"Enter Process Priority (higher number = higher priority): ";
+            cin>>p.priority;
+            arrivalQueue.push(p);
+            cout<<"Process "<<p.id<<" added to arrival queue";
+        }
+        else if(choice==2)
+        {
+            if(arrivalQueue.empty() && execStack.empty())
+            {
+                cout<<"No processes to execute";
+                continue;
+            }
+
+            int maxPriority=-1;
+            queue<Process> tempQueue;
+            while(!arrivalQueue.empty())
+            {
+                Process p=arrivalQueue.front(); arrivalQueue.pop();
+                if(p.priority>maxPriority) maxPriority=p.priority;
+                tempQueue.push(p);
+            }
+
+            bool moved=false;
+            int size=tempQueue.size();
+            for(int i=0;i<size;i++)
+            {
+                Process p=tempQueue.front(); tempQueue.pop();
+                if(p.priority==maxPriority && !moved)
+                {
+                    execStack.push(p);
+                    moved=true;
+                }
+                else
+                    arrivalQueue.push(p);
+            }
+
+            if(!execStack.empty())
+            {
+                Process p=execStack.top(); execStack.pop();
+                cout<<"Executing Process ID: "<<p.id<<" with Priority: "<<p.priority<<endl;
+            }
+        }
+        else if(choice==3)
+        {
+            if(arrivalQueue.empty())
+                cout<<"Arrival Queue is empty";
+            else
+            {
+                cout<<"Processes in Arrival Queue (FIFO): ";
+                queue<Process> temp=arrivalQueue;
+                while(!temp.empty())
+                {
+                    cout<<temp.front().id<<" ";
+                    temp.pop();
+                }
+                cout<<endl;
+            }
+        }
+        else if(choice==4)
+        {
+            cout<<"Exiting";
+            break;
+        }
+        else
+            cout<<"Invalid";
+    }
+}
