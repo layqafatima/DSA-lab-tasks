@@ -1,0 +1,124 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Node
+{
+public:
+    string url;
+    Node* next;
+    Node(string u) { url = u; next = NULL; }
+};
+
+class Stack
+{
+public:
+    Node* top;
+    Stack() { top = NULL; }
+
+    void push(string url)
+    {
+        Node* newNode = new Node(url);
+        newNode->next = top;
+        top = newNode;
+    }
+
+    void pop()
+    {
+        if (top == NULL)
+            cout << "No more history to go back";
+        else
+        {
+            Node* temp = top;
+            top = top->next;
+            delete temp;
+        }
+    }
+
+    string peek()
+    {
+        if (top == NULL)
+            return "No page";
+        else
+            return top->url;
+    }
+
+    bool isEmpty()
+    {
+        return top == NULL;
+    }
+
+    void display()
+    {
+        if (top == NULL)
+            cout << "No browsing history"<<endl;
+        else
+        {
+            Node* temp = top;
+            cout << "History (latest to oldest):"<<endl;
+            while (temp != NULL)
+            {
+                cout << temp->url << endl;
+                temp = temp->next;
+            }
+        }
+    }
+};
+
+int main()
+{
+    Stack backStack, forwardStack;
+    string currentPage = "Home";
+    int choice;
+    string newPage;
+
+    while (true)
+    {
+        cout << "\nCurrent Page: " << currentPage << endl;
+        cout << "Browser Menu";
+        cout << "1. Visit New Page\n2. Go Back\n3. Go Forward\n4. Show History\n5. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            cout << "Enter new page URL: ";
+            cin >> newPage;
+            backStack.push(currentPage);
+            currentPage = newPage;
+            while (!forwardStack.isEmpty())
+                forwardStack.pop(); 
+        }
+        else if (choice == 2)
+        {
+            if (backStack.isEmpty())
+                cout << "No previous page.\n";
+            else
+            {
+                forwardStack.push(currentPage);
+                currentPage = backStack.peek();
+                backStack.pop();
+            }
+        }
+        else if (choice == 3)
+        {
+            if (forwardStack.isEmpty())
+                cout << "No forward page";
+            else
+            {
+                backStack.push(currentPage);
+                currentPage = forwardStack.peek();
+                forwardStack.pop();
+            }
+        }
+        else if (choice == 4)
+            backStack.display();
+        else if (choice == 5)
+        {
+            cout << "Exiting browser simulation";
+            break;
+        }
+        else
+            cout << "Invalid choice";
+    }
+}
